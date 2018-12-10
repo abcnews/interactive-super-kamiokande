@@ -1,0 +1,26 @@
+{
+  "name": "interactive-super-kamiokande",
+  "version": "1.0.0-pre",
+  "description": "A project generated from aunty's preact app template.",
+  "license": "MIT",
+  "private": true,
+  "contributors": [
+    "Colin Gourlay <Gourlay.Colin@abc.net.au>"
+  ],
+  "aunty": {
+    "type": "preact"
+  },
+  "scripts": {
+    "start": "aunty serve",
+    "test": "aunty test"
+  },
+  "devDependencies": {
+    "@abcnews/aunty": "^9.11.0",
+    "html-looks-like": "^1.0.3",
+    "preact-render-to-string": "^4.1.0"
+  },
+  "dependencies": {
+    "preact": "^8.4.2",
+    "preact-compat": "^3.18.4"
+  }
+}
