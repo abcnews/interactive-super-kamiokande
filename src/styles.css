@@ -1,0 +1,16 @@
+:global(#abcHeader.global) + [data-presentation-layer-async-component],
+:global(#abcHeader.global) + [data-component='App'],
+:global(.masthead-container) > [data-component='App'] {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+
+:global(.Header) {
+  display: none;
+}
+
+.mountNode {
+  margin-top: 0 !important;
+}

@@ -7,20 +7,20 @@
   "contributors": [
     "Colin Gourlay <Gourlay.Colin@abc.net.au>"
   ],
-  "aunty": {
-    "type": "preact"
-  },
   "scripts": {
-    "start": "aunty serve",
-    "test": "aunty test"
+    "start": "aunty serve"
   },
   "devDependencies": {
-    "@abcnews/aunty": "^9.11.0",
-    "html-looks-like": "^1.0.3",
-    "preact-render-to-string": "^4.1.0"
+    "@abcnews/aunty": "^10.2.3"
   },
   "dependencies": {
+    "@abcnews/scrollyteller": "^1.1.4",
+    "aframe": "^0.8.2",
+    "aframe-animation-component": "^5.1.2",
+    "aframe-react": "^4.4.0",
+    "classnames": "^2.2.6",
     "preact": "^8.4.2",
-    "preact-compat": "^3.18.4"
+    "preact-compat": "^3.18.4",
+    "react-create-ref": "^1.0.0"
   }
 }

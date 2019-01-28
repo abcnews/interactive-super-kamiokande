@@ -1,29 +1,40 @@
+import { loadOdysseyScrollyteller } from '@abcnews/scrollyteller';
+import cn from 'classnames';
 import { h, render } from 'preact';
 import App from './components/App';
+import styles from './styles.css';
 
-const PROJECT_NAME = 'interactive-super-kamiokande';
-const root = document.querySelector(`[data-${PROJECT_NAME}-root]`);
+let scrollyteller;
 
-function init() {
-  render(<App projectName={PROJECT_NAME} />, root, root.firstChild);
+function renderApp() {
+  render(<App panels={scrollyteller.panels} />, scrollyteller.mountNode, scrollyteller.mountNode.firstChild);
 }
-
-init();
 
 if (module.hot) {
   module.hot.accept('./components/App', () => {
     try {
-      init();
+      renderApp();
     } catch (err) {
       import('./components/ErrorBox').then(exports => {
         const ErrorBox = exports.default;
-        render(<ErrorBox error={err} />, root, root.firstChild);
+        render(<ErrorBox error={err} />, scrollyteller.mountNode, scrollyteller.mountNode.firstChild);
       });
     }
   });
 }
 
+function init() {
+  scrollyteller = loadOdysseyScrollyteller('superk', cn('u-full', styles.mountNode));
+  renderApp();
+  // window.scrollY = 0;
+}
+
+if (window.__ODYSSEY__) {
+  init();
+} else {
+  window.addEventListener('odyssey:api', init);
+}
+
 if (process.env.NODE_ENV === 'development') {
   require('preact/devtools');
-  console.debug(`[${PROJECT_NAME}] public path: ${__webpack_public_path__}`);
 }
