@@ -11,12 +11,19 @@ export default class Camera extends Component {
     this.rollAxis = createRef();
   }
 
+  componentDidMount() {
+    // For some reason, iniital attributes aren't set. Do it manually.
+    this.yawAxis.current.setAttribute('rotation', { x: 0, y: this.props.yaw, z: 0 });
+    this.pitchAxis.current.setAttribute('rotation', { x: this.props.pitch, y: 0, z: 0 });
+    this.rollAxis.current.setAttribute('rotation', { x: 0, y: 0, z: this.props.roll });
+  }
+
   render() {
-    const { yaw, pitch, roll, children } = this.props;
+    const { yaw, pitch, roll, children, ...otherProps } = this.props;
     const end = {
       yaw: (yaw || 0) % 360,
-      pitch: clamp(pitch, 75),
-      roll: clamp(roll, 60)
+      pitch: clampAngle(pitch, 75),
+      roll: clampAngle(roll, 60)
     };
     const begin = {
       yaw: this.yawAxis.current ? (this.yawAxis.current.getAttribute('rotation').y + 360) % 360 : end.yaw,
@@ -32,7 +39,7 @@ export default class Camera extends Component {
     const rollAnimation = rotationAnimation('z', rollPath, animationDuration);
 
     return (
-      <Entity _ref={this.yawAxis} animation__yaw={yawAnimation}>
+      <Entity _ref={this.yawAxis} animation__yaw={yawAnimation} {...otherProps}>
         <Entity _ref={this.pitchAxis} animation__pitch={pitchAnimation}>
           <Entity
             _ref={this.rollAxis}
@@ -50,7 +57,7 @@ export default class Camera extends Component {
   }
 }
 
-const clamp = (angle, limit) => {
+const clampAngle = (angle, limit) => {
   angle = (angle || 0) % 360;
 
   if (angle > 180) {
@@ -61,22 +68,10 @@ const clamp = (angle, limit) => {
 };
 
 const shortestPath = (from, to) => {
-  const diff = Math.abs(((to - from + 540) % 360) - 180);
-  if (diff < Math.abs(to - from)) {
-    return { from: from > to ? from - 360 : from, to: to > from ? to - 360 : to, diff };
-  }
+  const rotation = ((to - from + 540) % 360) - 180;
 
-  return { from, to, diff };
+  return { from: to - rotation, to, diff: Math.abs(rotation) };
 };
-
-// const rotationAnimation = (axis, path, duration) => ({
-//   property: 'rotation',
-//   dur: duration,
-//   from: { [axis]: path.from },
-//   to: { [axis]: path.to },
-//   easing: 'easeInOutQuad',
-//   loop: 1
-// });
 
 const rotationAnimation = (axis, path, duration) =>
   [

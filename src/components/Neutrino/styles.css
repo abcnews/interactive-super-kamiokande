@@ -1,3 +1,12 @@
+@keyframes appear {
+  0% {
+    transform: translate(0, 100vh);
+  }
+  100% {
+    transform: none;
+  }
+}
+
 .root {
   display: flex;
   flex-direction: column;
@@ -5,4 +14,22 @@
   justify-content: center;
   width: 100%;
   height: 100%;
+  background-color: #000;
+  animation: appear 2s 1s ease-out both;
+}
+
+@keyframes hover {
+  0%,
+  100% {
+    transform: translate(0, -0.5rem);
+  }
+  50% {
+    transform: translate(0, 0.5rem);
+  }
+}
+
+.neutrino {
+  width: 139px;
+  height: 139px;
+  animation: hover 2s ease-out infinite;
 }

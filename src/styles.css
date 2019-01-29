@@ -14,3 +14,15 @@
 .mountNode {
   margin-top: 0 !important;
 }
+
+:global(.is-piecemeal) :global(.Block-content.u-richtext-invert):nth-child(-n + 8) > * {
+  background-color: rgba(63, 63, 63, 0.6);
+}
+
+:global(.is-piecemeal) :global(.Block-content.u-richtext-invert):nth-child(9) > * {
+  background-color: rgba(47, 47, 47, 0.6);
+}
+
+:global(.is-piecemeal) :global(.Block-content.u-richtext-invert):nth-child(10) > * {
+  background-color: rgba(31, 31, 31, 0.6);
+}

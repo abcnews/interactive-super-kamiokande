@@ -1,11 +1,9 @@
 import { h } from 'preact';
 import styles from './styles.css';
 
-const Neutrino = ({ step }) => (
+const Neutrino = () => (
   <div className={styles.root}>
-    <div className="u-richtext-invert">
-      <h2>{`Neutrino ${step} / 10`}</h2>
-    </div>
+    <object className={styles.neutrino} data={`${__webpack_public_path__}assets/Neutrino.svg`} />
   </div>
 );
 
