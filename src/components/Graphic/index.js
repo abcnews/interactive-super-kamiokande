@@ -14,7 +14,7 @@ const Graphic = ({ step }) => (
         <h2>🎇</h2>
       </div>
     </Layer>
-    <Layer isVisible={step > 10}>
+    <Layer isVisible={(step > 10) & (step < 21)}>
       <Tank step={clamp(step - 10, 0, 5)} />
     </Layer>
   </Layers>

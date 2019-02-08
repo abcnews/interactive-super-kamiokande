@@ -5,3 +5,18 @@
 .center {
   text-align: center;
 }
+
+.scrollyteller > :not(:first-child):nth-child(-n + 8) > *,
+.scrollyteller > :not(:first-child):nth-child(n + 20) > * {
+  background-color: rgba(63, 63, 63, 0.6);
+}
+
+.scrollyteller > :not(:first-child):nth-child(9) > *,
+.scrollyteller > :not(:first-child):nth-child(19) > * {
+  background-color: rgba(47, 47, 47, 0.6);
+}
+
+.scrollyteller > :not(:first-child):nth-child(10) > *,
+.scrollyteller > :not(:first-child):nth-child(18) > * {
+  background-color: rgba(31, 31, 31, 0.6);
+}
