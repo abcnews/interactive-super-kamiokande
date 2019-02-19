@@ -14,11 +14,14 @@ export default class App extends Component {
   constructor(props) {
     super(props);
 
+    this.cumulatitveStateMap = createCumulatitveStateMap(props.panels.map(panel => panel.config), DEFAULT_STATE);
+
     this.onMarker = this.onMarker.bind(this);
   }
 
   onMarker(changes) {
-    this.setState({ ...DEFAULT_STATE, ...changes });
+    console.log(changes, this.cumulatitveStateMap.get(changes));
+    this.setState(this.cumulatitveStateMap.get(changes));
   }
 
   render() {
@@ -35,4 +38,17 @@ export default class App extends Component {
       </Scrollyteller>
     );
   }
+}
+
+function createCumulatitveStateMap(states, initialState) {
+  const map = new WeakMap();
+  let tempState = { ...initialState };
+
+  states.forEach(state => {
+    tempState = { ...tempState, ...state };
+    delete tempState.hash;
+    map.set(state, { ...tempState });
+  });
+
+  return map;
 }
