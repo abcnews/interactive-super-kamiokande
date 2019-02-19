@@ -6,12 +6,14 @@ import styles from './styles.css';
 const LAYERS = [
   {
     tagName: 'img',
-    src: '360-take2-4000-60percent.jpg'
+    // src: 'http://nucwed.aus.aunty.abc.net.au/cm/lb/10817636/data/chamber-test-image-data.jpg'
+    src: 'https://www.abc.net.au/cm/lb/10817636/data/chamber-test-image-data.jpg'
   },
   {
     tagName: 'video',
     loop: false,
-    src: 'Tank_visualisation-example.mp4'
+    // src: 'http://mpegmedia.abc.net.au/news/video/201902/Tank_visualisation-example-4000.mp4'
+    src: 'https://abcmedia.akamaized.net/news/video/201902/Tank_visualisation-example-4000.mp4'
   }
 ];
 
@@ -95,7 +97,7 @@ export default class Tank extends Component {
               id: `sky-${this.id}-${index}`,
               loop: loop,
               muted: tagName === 'video',
-              src: `${__webpack_public_path__}assets/${src}`
+              src
             })
           )}
         </a-assets>
