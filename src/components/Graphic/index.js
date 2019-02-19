@@ -4,18 +4,13 @@ import Neutrino from '../Neutrino';
 import Tank from '../Tank';
 import styles from './styles.css';
 
-const Graphic = ({ step }) => (
+const Graphic = ({ assets, scene, roll, pitch, yaw, asset }) => (
   <Layers>
-    <Layer isVisible={step < 10}>
-      <Neutrino step={clamp(step, 0, 9)} />
+    <Layer isVisible={scene === 'neutrino'}>
+      <Neutrino />
     </Layer>
-    <Layer isVisible={step >= 15 && step < 18}>
-      <div className="u-richtext-invert">
-        <h2>🎇</h2>
-      </div>
-    </Layer>
-    <Layer isVisible={(step > 10) & (step < 21)}>
-      <Tank step={clamp(step - 10, 0, 5)} />
+    <Layer isVisible={scene === 'tank'}>
+      <Tank assets={assets} roll={roll} pitch={pitch} yaw={yaw} asset={asset} />
     </Layer>
   </Layers>
 );
@@ -37,5 +32,3 @@ const Layer = ({ children, className, isVisible, ...otherProps }) => (
     {children}
   </div>
 );
-
-const clamp = (x, min, max) => Math.max(min, Math.min(max, x));

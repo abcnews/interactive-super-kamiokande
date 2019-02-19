@@ -3,48 +3,6 @@ import { h, Component } from 'preact';
 import Camera from '../Camera';
 import styles from './styles.css';
 
-const LAYERS = [
-  {
-    tagName: 'img',
-    // src: 'http://nucwed.aus.aunty.abc.net.au/cm/lb/10817636/data/chamber-test-image-data.jpg'
-    src: 'https://www.abc.net.au/cm/lb/10817636/data/chamber-test-image-data.jpg'
-  },
-  {
-    tagName: 'video',
-    loop: false,
-    // src: 'http://mpegmedia.abc.net.au/news/video/201902/Tank_visualisation-example-4000.mp4'
-    src: 'https://abcmedia.akamaized.net/news/video/201902/Tank_visualisation-example-4000.mp4'
-  }
-];
-
-const PRESET_STEPS = [
-  {
-    layerIndex: 0,
-    yaw: 0,
-    pitch: 45
-  },
-  {
-    layerIndex: 0,
-    yaw: 0,
-    pitch: 15
-  },
-  {
-    layerIndex: 0,
-    yaw: 90,
-    pitch: 15
-  },
-  {
-    layerIndex: 1,
-    yaw: 90,
-    pitch: 15
-  },
-  {
-    layerIndex: 0,
-    yaw: 0,
-    pitch: 15
-  }
-];
-
 const SKIES_OFFSET_ROTATION = '0 78 0';
 
 let nextID = 0;
@@ -78,41 +36,46 @@ export default class Tank extends Component {
     }
   }
 
-  shouldComponentUpdate({ step }, { loadedDependencies }) {
-    return step !== this.props.step || loadedDependencies !== this.state.loadedDependencies;
+  shouldComponentUpdate({ scene, yaw, pitch, roll, asset }, { loadedDependencies }) {
+    return (
+      scene !== this.props.scene ||
+      yaw !== this.props.yaw ||
+      pitch !== this.props.pitch ||
+      roll !== this.props.roll ||
+      asset !== this.props.asset ||
+      loadedDependencies !== this.state.loadedDependencies
+    );
   }
 
   render() {
-    const { step } = this.props;
+    const { assets, scene, yaw, pitch, roll, asset } = this.props;
     const { loadedDependencies } = this.state;
-    const { layerIndex, yaw, pitch } = PRESET_STEPS[step] || PRESET_STEPS[0];
 
     return loadedDependencies ? (
       <Scene embedded keyboard-shortcuts="enterVR: false" vr-mode-ui="enabled: false">
         <a-assets>
-          {LAYERS.map(({ tagName, loop, src }, index) =>
+          {assets.map(({ id, tagName, src }) =>
             h(tagName, {
               autoPlay: tagName === 'video',
               crossOrigin: 'anonymous',
-              id: `sky-${this.id}-${index}`,
-              loop: loop,
+              id: `sky-${this.id}-${id}`,
               muted: tagName === 'video',
               src
             })
           )}
         </a-assets>
         <Entity rotation={SKIES_OFFSET_ROTATION}>
-          {LAYERS.map(({ tagName }, index) => (
+          {assets.map(({ id, tagName }, index) => (
             <Entity
-              animation_fade={fadeAnimation(index === layerIndex ? 0 : 1, index === layerIndex ? 1 : 0)}
-              material={{ opacity: index === layerIndex ? 1 : 0 }}
+              animation_fade={fadeAnimation(asset === id ? 0 : 1, asset === id ? 1 : 0)}
+              material={{ opacity: asset === id ? 1 : 0 }}
               primitive={tagName === 'video' ? 'a-videosphere' : 'a-sky'}
-              ref={index === layerIndex ? this.getActiveLayerRef : null}
-              src={`#sky-${this.id}-${index}`}
+              ref={asset === id ? this.getActiveLayerRef : null}
+              src={`#sky-${this.id}-${id}`}
             />
           ))}
         </Entity>
-        <Camera yaw={yaw} pitch={pitch} roll={0} />
+        <Camera yaw={+yaw} pitch={+pitch} roll={+roll} />
       </Scene>
     ) : (
       <div className={styles.loading} />

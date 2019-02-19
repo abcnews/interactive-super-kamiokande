@@ -5,7 +5,11 @@ import Graphic from '../Graphic';
 import styles from './styles.css';
 
 const DEFAULT_STATE = {
-  step: 1
+  scene: 0,
+  yaw: 0,
+  pitch: 0,
+  roll: 0,
+  asset: null
 };
 
 export default class App extends Component {
@@ -14,18 +18,18 @@ export default class App extends Component {
   constructor(props) {
     super(props);
 
-    this.cumulatitveStateMap = createCumulatitveStateMap(props.panels.map(panel => panel.config), DEFAULT_STATE);
+    this.configToStateMap = createCumulatitveStateMap(props.panels.map(panel => panel.config), DEFAULT_STATE);
 
     this.onMarker = this.onMarker.bind(this);
   }
 
-  onMarker(changes) {
-    console.log(changes, this.cumulatitveStateMap.get(changes));
-    this.setState(this.cumulatitveStateMap.get(changes));
+  onMarker(config) {
+    this.setState(this.configToStateMap.get(config));
   }
 
   render() {
-    const { panels } = this.props;
+    const { assets, panels } = this.props;
+    console.log(this.state);
 
     return (
       <Scrollyteller
@@ -34,7 +38,7 @@ export default class App extends Component {
         panels={panels}
         panelClassName={cn('Block-content', 'u-richtext-invert', styles.center)}
       >
-        <Graphic {...this.state} />
+        <Graphic assets={assets} {...this.state} />
       </Scrollyteller>
     );
   }
@@ -47,6 +51,7 @@ function createCumulatitveStateMap(states, initialState) {
   states.forEach(state => {
     tempState = { ...tempState, ...state };
     delete tempState.hash;
+    delete tempState.piecemeal;
     map.set(state, { ...tempState });
   });
 
