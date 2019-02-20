@@ -26,6 +26,10 @@ export default class Tank extends Component {
   }
 
   getActiveLayerRef(component) {
+    if (!component) {
+      return;
+    }
+
     const layerEl = component.el;
 
     const isVideo = layerEl.components.material.material && layerEl.components.material.material.map.image.play;
@@ -59,6 +63,7 @@ export default class Tank extends Component {
               autoPlay: tagName === 'video',
               crossOrigin: 'anonymous',
               id: `sky-${this.id}-${id}`,
+              loop: tagName === 'video',
               muted: tagName === 'video',
               src
             })
