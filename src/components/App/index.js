@@ -29,7 +29,6 @@ export default class App extends Component {
 
   render() {
     const { assets, panels } = this.props;
-    console.log(this.state);
 
     return (
       <Scrollyteller
