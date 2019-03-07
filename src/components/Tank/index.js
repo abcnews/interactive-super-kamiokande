@@ -32,7 +32,11 @@ export default class Tank extends Component {
 
     const layerEl = component.el;
 
-    const isVideo = layerEl.components.material.material && layerEl.components.material.material.map.image.play;
+    const isVideo =
+      layerEl.components.material.material &&
+      layerEl.components.material.material.map &&
+      layerEl.components.material.material.map.image &&
+      layerEl.components.material.material.map.image.play;
 
     if (isVideo) {
       // layerEl.components.material.material.map.image.currentTime = 0;
