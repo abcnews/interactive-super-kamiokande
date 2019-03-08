@@ -98,10 +98,19 @@ function fetchAssets(panels) {
                 return reject(new Error(`Unsupported asset type: ${doc.docType}`));
               }
 
+              const renditions = (doc.renditions || doc.media).slice().sort((a, b) => b.width - a.width);
+              let src = renditions[0].url;
+
+              renditions.slice(1).forEach(x => {
+                if (x.width > window.innerWidth) {
+                  src = x.url;
+                }
+              });
+
               resolve({
                 id: doc.id,
                 tagName,
-                src: (doc.renditions || doc.media)[0].url
+                src
               });
             });
           })
