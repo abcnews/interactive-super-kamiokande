@@ -32,6 +32,11 @@ if (module.hot) {
 function init() {
   scrollyteller = loadOdysseyScrollyteller('superk', cn('u-full', styles.mountNode));
 
+  // Clear out the <a name/> markers that scrollyteller leaves behind
+  while (scrollyteller.mountNode.nextElementSibling.tagName === 'A') {
+    window.__ODYSSEY__.utils.dom.detach(scrollyteller.mountNode.nextElementSibling);
+  }
+
   fetchAssets(scrollyteller.panels)
     .then(_assets => {
       assets = _assets;
