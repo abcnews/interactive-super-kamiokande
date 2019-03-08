@@ -7,13 +7,32 @@ import styles from './styles.css';
 
 let scrollyteller;
 let assets;
+let schedulerReference;
 
 function renderApp() {
+  if (schedulerReference) {
+    window.__ODYSSEY__.scheduler.unsubscribe(schedulerReference);
+  }
+
   render(
     <App assets={assets} panels={scrollyteller.panels} />,
     scrollyteller.mountNode,
     scrollyteller.mountNode.firstChild
   );
+
+  let mountNodeOpacity = null;
+
+  schedulerReference = client => {
+    const box = scrollyteller.mountNode.getBoundingClientRect();
+    const nextMountNodeOpacity = Math.max(0, Math.min(box.bottom - client.height, client.height)) / client.height;
+
+    if (mountNodeOpacity !== nextMountNodeOpacity) {
+      mountNodeOpacity = nextMountNodeOpacity;
+      scrollyteller.mountNode.style.opacity = mountNodeOpacity;
+    }
+  };
+
+  window.__ODYSSEY__.scheduler.subscribe(schedulerReference);
 }
 
 if (module.hot) {
