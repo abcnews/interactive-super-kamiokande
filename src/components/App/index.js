@@ -6,6 +6,7 @@ import styles from './styles.css';
 
 const DEFAULT_STATE = {
   scene: 0,
+  elevation: 0,
   yaw: 0,
   pitch: 0,
   roll: 0,
@@ -32,7 +33,7 @@ export default class App extends Component {
 
     return (
       <Scrollyteller
-        className={cn('is-piecemeal', styles.scrollyteller)}
+        className={cn('is-piecemeal', styles.scrollyteller, `scene__${this.state.scene}`)}
         onMarker={this.onMarker}
         panels={panels}
         panelClassName={cn('Block-content', 'u-richtext-invert', styles.center)}
@@ -43,14 +44,34 @@ export default class App extends Component {
   }
 }
 
+const negativeNumberPattern = /^n\d+/;
+const decimalNumberPattern = /\d+p\d+$/;
+
 function createCumulatitveStateMap(states, initialState) {
   const map = new WeakMap();
   let tempState = { ...initialState };
 
   states.forEach(state => {
     tempState = { ...tempState, ...state };
+
+    // Number resolution
+    Object.keys(tempState).forEach(key => {
+      if (negativeNumberPattern.test(String(tempState[key]))) {
+        tempState[key] = tempState[key].replace('n', '-');
+      }
+
+      if (decimalNumberPattern.test(String(tempState[key]))) {
+        tempState[key] = tempState[key].replace('p', '.');
+      }
+
+      if (tempState[key] == +tempState[key]) {
+        tempState[key] = +tempState[key];
+      }
+    });
+
     delete tempState.hash;
     delete tempState.piecemeal;
+
     map.set(state, { ...tempState });
   });
 

@@ -4,13 +4,13 @@ import Neutrino from '../Neutrino';
 import Tank from '../Tank';
 import styles from './styles.css';
 
-const Graphic = ({ assets, scene, roll, pitch, yaw, asset }) => (
+const Graphic = ({ assets, scene, elevation, yaw, pitch, roll, asset }) => (
   <Layers>
     <Layer isVisible={scene === 'neutrino'}>
       <Neutrino />
     </Layer>
     <Layer isVisible={scene === 'tank'}>
-      <Tank assets={assets} roll={roll} pitch={pitch} yaw={yaw} asset={asset} />
+      <Tank assets={assets} elevation={elevation} yaw={yaw} pitch={pitch} roll={roll} asset={asset} />
     </Layer>
   </Layers>
 );

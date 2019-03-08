@@ -3,7 +3,8 @@ import { h, Component } from 'preact';
 import Camera from '../Camera';
 import styles from './styles.css';
 
-const SKIES_OFFSET_ROTATION = '0 78 0';
+const RADIUS = 20;
+const SKIES_OFFSET_ROTATION = '0 85 0';
 
 let nextID = 0;
 
@@ -44,9 +45,10 @@ export default class Tank extends Component {
     }
   }
 
-  shouldComponentUpdate({ scene, yaw, pitch, roll, asset }, { loadedDependencies }) {
+  shouldComponentUpdate({ scene, elevation, yaw, pitch, roll, asset }, { loadedDependencies }) {
     return (
       scene !== this.props.scene ||
+      elevation !== this.props.elevation ||
       yaw !== this.props.yaw ||
       pitch !== this.props.pitch ||
       roll !== this.props.roll ||
@@ -56,7 +58,7 @@ export default class Tank extends Component {
   }
 
   render() {
-    const { assets, scene, yaw, pitch, roll, asset } = this.props;
+    const { assets, scene, elevation, yaw, pitch, roll, asset } = this.props;
     const { loadedDependencies } = this.state;
 
     return loadedDependencies ? (
@@ -85,6 +87,7 @@ export default class Tank extends Component {
           ))}
         </Entity>
         <Camera yaw={+yaw} pitch={+pitch} roll={+roll} />
+        <Camera elevation={+elevation} maxElevation={RADIUS} yaw={+yaw} pitch={+pitch} roll={+roll} />
       </Scene>
     ) : (
       <div className={styles.loading} />
