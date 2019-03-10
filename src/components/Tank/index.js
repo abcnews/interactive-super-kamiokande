@@ -1,6 +1,7 @@
 import { Entity, Scene } from 'aframe-react';
 import { h, Component } from 'preact';
 import Camera from '../Camera';
+import Sky from '../Sky';
 import styles from './styles.css';
 
 const RADIUS = 20;
@@ -17,32 +18,12 @@ export default class Tank extends Component {
     super(props);
 
     this.id = nextID++;
-    this.getActiveLayerRef = this.getActiveLayerRef.bind(this);
 
     import(/* webpackChunkName: "tank-dependencies" */ './dependencies')
       .then(() => {
         this.setState({ loadedDependencies: true });
       })
       .catch(err => console.error(err));
-  }
-
-  getActiveLayerRef(component) {
-    if (!component) {
-      return;
-    }
-
-    const layerEl = component.el;
-
-    const isVideo =
-      layerEl.components.material.material &&
-      layerEl.components.material.material.map &&
-      layerEl.components.material.material.map.image &&
-      layerEl.components.material.material.map.image.play;
-
-    if (isVideo) {
-      // layerEl.components.material.material.map.image.currentTime = 0;
-      layerEl.components.material.material.map.image.play();
-    }
   }
 
   shouldComponentUpdate({ scene, elevation, yaw, pitch, roll, asset }, { loadedDependencies }) {
@@ -77,16 +58,9 @@ export default class Tank extends Component {
         </a-assets>
         <Entity rotation={SKIES_OFFSET_ROTATION}>
           {assets.map(({ id, tagName }, index) => (
-            <Entity
-              animation_fade={fadeAnimation(asset === id ? 0 : 1, asset === id ? 1 : 0)}
-              material={{ opacity: asset === id ? 1 : 0 }}
-              primitive={tagName === 'video' ? 'a-videosphere' : 'a-sky'}
-              ref={asset === id ? this.getActiveLayerRef : null}
-              src={`#sky-${this.id}-${id}`}
-            />
+            <Sky tagName={tagName} src={`#sky-${this.id}-${id}`} radius={RADIUS} isActive={asset === id} />
           ))}
         </Entity>
-        <Camera yaw={+yaw} pitch={+pitch} roll={+roll} />
         <Camera elevation={+elevation} maxElevation={RADIUS} yaw={+yaw} pitch={+pitch} roll={+roll} />
       </Scene>
     ) : (
@@ -94,13 +68,3 @@ export default class Tank extends Component {
     );
   }
 }
-
-const fadeAnimation = (from, to) =>
-  [
-    `property: components.material.material.opacity`,
-    `dur: 1000`,
-    `from: ${from}`,
-    `to: ${to}`,
-    `easing: easeInOutQuad`,
-    `loop: 1`
-  ].join('; ');
