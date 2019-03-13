@@ -11,7 +11,9 @@ export default class Sky extends Component {
 
   componentDidMount() {
     // For some reason, iniital attributes aren't set. Do it manually.
-    this.root.current.setAttribute('opacity', this.props.isActive ? 1 : 0);
+    this.root.current.setAttribute('material', {
+      opacity: this.props.isActive ? 1 : 0
+    });
 
     if (this.props.tagName === 'video') {
       const assetReadyInterval = setInterval(() => {
@@ -33,7 +35,7 @@ export default class Sky extends Component {
       return;
     }
 
-    if (this.props.tagName === 'video' && this.props.isActive && !prevProps.isActive) {
+    if (this.props.isActive && !prevProps.isActive && this.props.tagName === 'video') {
       this.root.current.components.material.material.map.image.currentTime = 0;
     }
   }
@@ -41,21 +43,15 @@ export default class Sky extends Component {
   render() {
     const { tagName, src, radius, isActive } = this.props;
 
-    const end = {
-      opacity: isActive ? 1 : 0
-    };
-
-    const begin = {
-      opacity: this.root.current ? +this.root.current.getAttribute('opacity') : isActive ? 0 : 1
-    };
+    const to = isActive ? 1 : 0;
+    const material = this.root.current ? this.root.current.getAttribute('material') : null;
+    const from = material ? material.opacity : 1 - to;
 
     return (
       <Entity
         _ref={this.root}
         primitive={tagName === 'video' ? 'a-videosphere' : 'a-sky'}
-        material={{ opacity: end.opacity }}
-        // opacity={end.opacity}
-        animation_fade={fadeAnimation(begin.opacity, end.opacity)}
+        animation__fade={fadeAnimation(from, to)}
         src={src}
         radius={radius}
       />
@@ -63,14 +59,4 @@ export default class Sky extends Component {
   }
 }
 
-const fadeAnimation = (from, to) =>
-  [
-    `property: opacity`,
-    // `property: components.material.material.opacity`,
-    // `isRawProperty: true`,
-    `dur: 2000`,
-    `from: ${from}`,
-    `to: ${to}`,
-    `easing: linear`,
-    `loop: 1`
-  ].join('; ');
+const fadeAnimation = (from, to) => `property: material.opacity; from: ${from}; to: ${to}; dur: 2000`;
