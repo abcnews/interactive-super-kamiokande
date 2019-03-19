@@ -15,7 +15,7 @@
   width: 100%;
   height: 100%;
   background-color: #000;
-  animation: appear 2s 1s ease-out both;
+  animation: appear 2s ease-out both;
 }
 
 @keyframes hover {
