@@ -13,7 +13,7 @@ const DEFAULT_STATE = {
   asset: null
 };
 
-export default class App extends Component {
+export default class SuperK extends Component {
   state = DEFAULT_STATE;
 
   constructor(props) {

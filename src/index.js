@@ -2,33 +2,33 @@ import capiFetch from '@abcnews/capi-fetch';
 import { loadOdysseyScrollyteller } from '@abcnews/scrollyteller';
 import cn from 'classnames';
 import { h, render } from 'preact';
-import App from './components/App';
+import SuperK from './components/SuperK';
 import styles from './styles.css';
 
-let scrollyteller;
+let superkScrollyteller;
 let assets;
 let schedulerReference;
 
-function renderApp() {
+function renderSuperK() {
   if (schedulerReference) {
     window.__ODYSSEY__.scheduler.unsubscribe(schedulerReference);
   }
 
   render(
-    <App assets={assets} panels={scrollyteller.panels} />,
-    scrollyteller.mountNode,
-    scrollyteller.mountNode.firstChild
+    <SuperK assets={assets} panels={superkScrollyteller.panels} />,
+    superkScrollyteller.mountNode,
+    superkScrollyteller.mountNode.firstChild
   );
 
   let mountNodeOpacity = null;
 
   schedulerReference = client => {
-    const box = scrollyteller.mountNode.getBoundingClientRect();
+    const box = superkScrollyteller.mountNode.getBoundingClientRect();
     const nextMountNodeOpacity = Math.max(0, Math.min(box.bottom - client.height, client.height)) / client.height;
 
     if (mountNodeOpacity !== nextMountNodeOpacity) {
       mountNodeOpacity = nextMountNodeOpacity;
-      scrollyteller.mountNode.style.opacity = mountNodeOpacity;
+      superkScrollyteller.mountNode.style.opacity = mountNodeOpacity;
     }
   };
 
@@ -36,30 +36,30 @@ function renderApp() {
 }
 
 if (module.hot) {
-  module.hot.accept('./components/App', () => {
+  module.hot.accept('./components/SuperK', () => {
     try {
-      renderApp();
+      renderSuperK();
     } catch (err) {
       import('./components/ErrorBox').then(exports => {
         const ErrorBox = exports.default;
-        render(<ErrorBox error={err} />, scrollyteller.mountNode, scrollyteller.mountNode.firstChild);
+        render(<ErrorBox error={err} />, superkScrollyteller.mountNode, superkScrollyteller.mountNode.firstChild);
       });
     }
   });
 }
 
 function init() {
-  scrollyteller = loadOdysseyScrollyteller('superk', cn('u-full', styles.mountNode));
+  superkScrollyteller = loadOdysseyScrollyteller('superk', cn('u-full', styles.mountNode));
 
-  // Clear out the <a name/> markers that scrollyteller leaves behind
-  while (scrollyteller.mountNode.nextElementSibling.tagName === 'A') {
-    window.__ODYSSEY__.utils.dom.detach(scrollyteller.mountNode.nextElementSibling);
+  // Clear out the <a name/> markers that superkScrollyteller leaves behind
+  while (superkScrollyteller.mountNode.nextElementSibling.tagName === 'A') {
+    window.__ODYSSEY__.utils.dom.detach(superkScrollyteller.mountNode.nextElementSibling);
   }
 
-  fetchAssets(scrollyteller.panels)
+  fetchAssets(superkScrollyteller.panels)
     .then(_assets => {
       assets = _assets;
-      renderApp();
+      renderSuperK();
     })
     .catch(err => {
       console.error(err);
