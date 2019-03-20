@@ -2,23 +2,23 @@
   margin-top: 0 !important;
 }
 
-.center {
+.panel {
   text-align: center;
 }
 
-.scrollyteller > :first-child ~ * > * {
+.panel > * {
   transition: background-color 1s;
 }
 
-.scrollyteller:not(:global(.scene__tank)) > :first-child ~ * > * {
+.scrollyteller:not(:global(.scene__tank)) .panel > * {
   background-color: transparent !important;
   text-shadow: 0 0 0.25em rgba(0, 0, 0, 0.75) !important;
 }
 
-.scrollyteller > * > h2 {
+.panel > h2 {
   opacity: 0;
 }
 
-.scrollyteller > :last-child {
+.panel:last-child {
   margin-bottom: 100vh !important;
 }

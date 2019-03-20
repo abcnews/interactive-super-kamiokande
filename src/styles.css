@@ -1,3 +1,7 @@
+html:not([veiled]):global(:not(.is-dark-mode)) > body {
+  transition: background-color 1s 0.5s;
+}
+
 :global(#abcHeader.global) + [data-presentation-layer-async-component],
 :global(#abcHeader.global) + [data-component='App'],
 :global(.masthead-container) > [data-component='App'] {
@@ -16,6 +20,10 @@
   margin-bottom: 0 !important;
 }
 
-.mountNode + * {
-  margin-top: -50vh;
+:global(.Main) .mountNode + * {
+  margin-top: -50vh !important;
+}
+
+:global(.Main) + :global(.Main) .mountNode + * {
+  margin-top: 0;
 }

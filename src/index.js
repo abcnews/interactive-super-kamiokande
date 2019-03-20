@@ -3,9 +3,11 @@ import { loadOdysseyScrollyteller } from '@abcnews/scrollyteller';
 import cn from 'classnames';
 import { h, render } from 'preact';
 import SuperK from './components/SuperK';
+import Supernova from './components/Supernova';
 import styles from './styles.css';
 
 let superkScrollyteller;
+let supernovaScrollyteller;
 let assets;
 let schedulerReference;
 
@@ -35,6 +37,14 @@ function renderSuperK() {
   window.__ODYSSEY__.scheduler.subscribe(schedulerReference);
 }
 
+function renderSupernova() {
+  render(
+    <Supernova panels={supernovaScrollyteller.panels} />,
+    supernovaScrollyteller.mountNode,
+    supernovaScrollyteller.mountNode.firstChild
+  );
+}
+
 if (module.hot) {
   module.hot.accept('./components/SuperK', () => {
     try {
@@ -48,22 +58,67 @@ if (module.hot) {
   });
 }
 
-function init() {
-  superkScrollyteller = loadOdysseyScrollyteller('superk', cn('u-full', styles.mountNode));
+if (module.hot) {
+  module.hot.accept('./components/Supernova', () => {
+    try {
+      renderSupernova();
+    } catch (err) {
+      import('./components/ErrorBox').then(exports => {
+        const ErrorBox = exports.default;
+        render(<ErrorBox error={err} />, supernovaScrollyteller.mountNode, supernovaScrollyteller.mountNode.firstChild);
+      });
+    }
+  });
+}
 
-  // Clear out the <a name/> markers that superkScrollyteller leaves behind
-  while (superkScrollyteller.mountNode.nextElementSibling.tagName === 'A') {
-    window.__ODYSSEY__.utils.dom.detach(superkScrollyteller.mountNode.nextElementSibling);
+function init() {
+  // SuperK
+
+  try {
+    superkScrollyteller = loadOdysseyScrollyteller('superk', cn('u-full', styles.mountNode));
+  } catch (e) {}
+
+  if (superkScrollyteller && superkScrollyteller.mountNode) {
+    while (superkScrollyteller.mountNode.nextElementSibling.tagName === 'A') {
+      window.__ODYSSEY__.utils.dom.detach(superkScrollyteller.mountNode.nextElementSibling);
+    }
+
+    fetchAssets(superkScrollyteller.panels)
+      .then(_assets => {
+        assets = _assets;
+        renderSuperK();
+      })
+      .catch(err => {
+        console.error(err);
+      });
   }
 
-  fetchAssets(superkScrollyteller.panels)
-    .then(_assets => {
-      assets = _assets;
-      renderSuperK();
-    })
-    .catch(err => {
-      console.error(err);
-    });
+  // Supernova
+
+  try {
+    supernovaScrollyteller = loadOdysseyScrollyteller('supernova', cn('u-full', styles.mountNode));
+  } catch (e) {}
+
+  if (supernovaScrollyteller && supernovaScrollyteller.mountNode) {
+    while (supernovaScrollyteller.mountNode.nextElementSibling.tagName === 'A') {
+      window.__ODYSSEY__.utils.dom.detach(supernovaScrollyteller.mountNode.nextElementSibling);
+    }
+
+    renderSupernova();
+  }
+
+  // Dark > Light Flip
+
+  const existingMainEl = document.querySelector('main');
+  const flippedMainEl = document.createElement('main');
+  let nextNode;
+
+  while ((nextNode = supernovaScrollyteller.mountNode.nextSibling)) {
+    flippedMainEl.appendChild(nextNode);
+  }
+
+  flippedMainEl.className = String(existingMainEl.className).replace('-invert', '');
+  existingMainEl.parentElement.insertBefore(flippedMainEl, existingMainEl.nextSibling);
 }
 
 const ASSET_TAGNAMES = {

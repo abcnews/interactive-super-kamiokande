@@ -36,7 +36,7 @@ export default class SuperK extends Component {
         className={cn('is-piecemeal', styles.scrollyteller, `scene__${this.state.scene}`)}
         onMarker={this.onMarker}
         panels={panels}
-        panelClassName={cn('Block-content', 'u-richtext-invert', styles.center)}
+        panelClassName={cn('Block-content', 'u-richtext-invert', styles.panel)}
       >
         <Graphic assets={assets} {...this.state} />
       </Scrollyteller>
