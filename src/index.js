@@ -72,6 +72,22 @@ if (module.hot) {
 }
 
 function init() {
+  const dom = window.__ODYSSEY__.utils.dom;
+
+  // Bulb
+
+  const bulbMarker = dom.select('a[name="bulb"]');
+
+  if (bulbMarker) {
+    const bulbGraphic = document.createElement('p');
+
+    bulbGraphic.style = 'position:relative;padding-top:62.5%;width:100%;height:0';
+    bulbGraphic.innerHTML = `<iframe frameborder="0" height="500" scrolling="no"
+      src="${__webpack_public_path__}Bulb.svg" style="position:absolute;top:0;left:0;width:100%;height:100%;" width="800" />`;
+    dom.before(bulbMarker, bulbGraphic);
+    dom.detach(bulbMarker);
+  }
+
   // SuperK
 
   try {
@@ -80,7 +96,7 @@ function init() {
 
   if (superkScrollyteller && superkScrollyteller.mountNode) {
     while (superkScrollyteller.mountNode.nextElementSibling.tagName === 'A') {
-      window.__ODYSSEY__.utils.dom.detach(superkScrollyteller.mountNode.nextElementSibling);
+      dom.detach(superkScrollyteller.mountNode.nextElementSibling);
     }
 
     fetchAssets(superkScrollyteller.panels)
@@ -101,7 +117,7 @@ function init() {
 
   if (supernovaScrollyteller && supernovaScrollyteller.mountNode) {
     while (supernovaScrollyteller.mountNode.nextElementSibling.tagName === 'A') {
-      window.__ODYSSEY__.utils.dom.detach(supernovaScrollyteller.mountNode.nextElementSibling);
+      dom.detach(supernovaScrollyteller.mountNode.nextElementSibling);
     }
 
     renderSupernova();
@@ -109,7 +125,7 @@ function init() {
 
   // Dark > Light Flip
 
-  const existingMainEl = document.querySelector('main');
+  const existingMainEl = dom.select('main');
   const flippedMainEl = document.createElement('main');
   let nextNode;
 
