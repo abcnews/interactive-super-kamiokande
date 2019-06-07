@@ -73,6 +73,7 @@ if (module.hot) {
 
 function init() {
   const dom = window.__ODYSSEY__.utils.dom;
+  const { subscribe } = window.__ODYSSEY__.scheduler;
 
   // Bulb
 
@@ -123,18 +124,39 @@ function init() {
     renderSupernova();
   }
 
-  // Dark > Light Flip
+  // Dark > Light > Dark Flip
 
   const existingMainEl = dom.select('main');
   const flippedMainEl = document.createElement('main');
+  const revertedMainEl = document.createElement('main');
+  let targetMainEl = flippedMainEl;
   let nextNode;
 
   while ((nextNode = supernovaScrollyteller.mountNode.nextSibling)) {
-    flippedMainEl.appendChild(nextNode);
+    if (String(nextNode.className).indexOf('Block') > -1 && targetMainEl === flippedMainEl) {
+      targetMainEl = revertedMainEl;
+    }
+
+    targetMainEl.appendChild(nextNode);
   }
 
   flippedMainEl.className = String(existingMainEl.className).replace('-invert', '');
-  existingMainEl.parentElement.insertBefore(flippedMainEl, existingMainEl.nextSibling);
+  revertedMainEl.className = String(existingMainEl.className);
+  dom.after(existingMainEl, flippedMainEl);
+  dom.after(flippedMainEl, revertedMainEl);
+
+  const firstRevertedBlockPar = dom.select('p', revertedMainEl);
+  let lastSign;
+
+  subscribe(client => {
+    const { top } = firstRevertedBlockPar.getBoundingClientRect();
+    const currentSign = Math.sign(top);
+
+    if (currentSign && currentSign !== lastSign) {
+      document.documentElement.classList[currentSign > 0 ? 'remove' : 'add']('is-dark-mode');
+      lastSign = currentSign;
+    }
+  });
 }
 
 const ASSET_TAGNAMES = {

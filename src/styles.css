@@ -11,6 +11,10 @@ html:not([veiled]):global(:not(.is-dark-mode)) > body {
   width: 100%;
 }
 
+:global(.Main) ~ :global(.Main) {
+  padding-top: 3rem;
+}
+
 :global(.Header) {
   display: none;
 }
@@ -27,3 +31,4 @@ html:not([veiled]):global(:not(.is-dark-mode)) > body {
 :global(.Main) + :global(.Main) .mountNode + * {
   margin-top: 0;
 }
+
