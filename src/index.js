@@ -75,6 +75,18 @@ function init() {
   const dom = window.__ODYSSEY__.utils.dom;
   const { subscribe } = window.__ODYSSEY__.scheduler;
 
+  // Meta (byline/infosource/dates)
+
+
+  const delayedTitle = dom.select('.Main h2');
+
+  if (delayedTitle) {
+    const metaContent = dom.select('.Header-content');
+
+    dom.detach(dom.select('h1', metaContent));
+    dom.after(delayedTitle, metaContent);
+  }
+
   // Bulb
 
   const bulbMarker = dom.select('a[name="bulb"]');

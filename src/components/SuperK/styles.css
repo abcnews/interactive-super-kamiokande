@@ -28,9 +28,42 @@
   }
 }
 
+/* Meta content (plucked from Header) */
 .panel > h2 {
   opacity: 0;
 }
+
+.panel > h2 + :global(.Header-content) {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 0 !important;
+  width: 100% !important;
+}
+
+.panel > h2 + :global(.Header-content) > * {
+  padding: 0 1rem;
+}
+
+.panel > h2 + :global(.Header-content) > p {
+  margin-top: 0;
+  max-width: 22rem;
+  font-size: 0.875rem !important;
+}
+
+@media (min-width: 61.25rem) {
+  .panel > h2 + :global(.Header-content) > p {
+    max-width: 24rem;
+    font-size: 1rem !important;
+  }
+}
+
+.panel > h2 + :global(.Header-content) > div {
+  margin: 0.25rem 0 0;
+  color: #ccc;
+}
+
+/* Space for fade */
 
 .panel:last-child {
   margin-bottom: 100vh !important;
