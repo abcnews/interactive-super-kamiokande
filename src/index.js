@@ -1,3 +1,4 @@
+import './polyfills';
 import capiFetch from '@abcnews/capi-fetch';
 import { loadOdysseyScrollyteller } from '@abcnews/scrollyteller';
 import cn from 'classnames';
@@ -77,7 +78,6 @@ function init() {
 
   // Meta (byline/infosource/dates)
 
-
   const delayedTitle = dom.select('.Main h2');
 
   if (delayedTitle) {
@@ -94,7 +94,10 @@ function init() {
   if (bulbMarker) {
     const bulbGraphic = document.createElement('p');
 
-    bulbGraphic.style = 'position:relative;padding-top:62.5%;width:100%;height:0';
+    bulbGraphic.style.setProperty('position', 'relative');
+    bulbGraphic.style.setProperty('padding-top', '62.5%');
+    bulbGraphic.style.setProperty('width', '100%');
+    bulbGraphic.style.setProperty('height', 0);
     bulbGraphic.innerHTML = `<iframe frameborder="0" height="500" scrolling="no"
       src="${__webpack_public_path__}Bulb.svg" style="position:absolute;top:0;left:0;width:100%;height:100%;" width="800" />`;
     dom.before(bulbMarker, bulbGraphic);
