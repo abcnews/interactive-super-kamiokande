@@ -84,7 +84,8 @@ function init() {
     const metaContent = dom.select('.Header-content');
 
     dom.detach(dom.select('h1', metaContent));
-    dom.after(delayedTitle, metaContent);
+    dom.after(delayedTitle.nextElementSibling /* <== should be a #mark */, metaContent);
+    dom.after(metaContent, document.createElement('hr'));
   }
 
   // Bigger text markers
