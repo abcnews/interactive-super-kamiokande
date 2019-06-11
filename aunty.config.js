@@ -3,6 +3,9 @@ module.exports = {
   build: {
     addModernJS: true
   },
+  serve: {
+    hot: false
+  },
   webpack: config => {
     // Add script that runs inside supernova iframe
     config.entry['supernova'] = [config.entry.index[0].replace('index', 'supernova')];
