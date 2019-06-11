@@ -92,14 +92,10 @@ function init() {
   const bulbMarker = dom.select('a[name="bulb"]');
 
   if (bulbMarker) {
-    const bulbGraphic = document.createElement('p');
+    const bulbGraphic = document.createElement('object');
 
-    bulbGraphic.style.setProperty('position', 'relative');
-    bulbGraphic.style.setProperty('padding-top', '62.5%');
-    bulbGraphic.style.setProperty('width', '100%');
-    bulbGraphic.style.setProperty('height', 0);
-    bulbGraphic.innerHTML = `<iframe frameborder="0" height="500" scrolling="no"
-      src="${__webpack_public_path__}Bulb.svg" style="position:absolute;top:0;left:0;width:100%;height:100%;" width="800" />`;
+    bulbGraphic.setAttribute('data', `${__webpack_public_path__}Bulb.svg`);
+    bulbGraphic.setAttribute('style', 'margin:0 auto !important;width:400px');
     dom.before(bulbMarker, bulbGraphic);
     dom.detach(bulbMarker);
   }
