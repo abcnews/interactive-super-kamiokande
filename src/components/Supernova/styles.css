@@ -17,10 +17,6 @@
   margin-bottom: 80vh !important;
 }
 
-:global(.is-piecemeal) > .panel:global(.Block-content):nth-child(2) > :first-child {
-  margin-top: 20vh !important;
-}
-
 :global(.is-piecemeal) > .panel:global(.Block-content):last-child > :first-child {
   margin-bottom: 40vh !important;
   background-color: transparent !important;
