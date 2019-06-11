@@ -161,6 +161,13 @@ function init() {
 
   subscribe(client => {
     const { top } = firstRevertedBlockPar.getBoundingClientRect();
+
+    if (Math.abs(top) > client.height / 2) {
+      // We only want this toggling dark mode when you scroll past
+      // the threshold, not when you start reading the story.
+      return;
+    }
+
     const currentSign = Math.sign(top);
 
     if (currentSign && currentSign !== lastSign) {
