@@ -87,6 +87,13 @@ function init() {
     dom.after(delayedTitle, metaContent);
   }
 
+  // Bigger text markers
+
+  dom.selectAll('a[name="bigger"]').forEach(el => {
+    el.nextElementSibling.classList.add(styles.bigger);
+    dom.detach(el);
+  });
+
   // Bulb
 
   const bulbMarker = dom.select('a[name="bulb"]');
