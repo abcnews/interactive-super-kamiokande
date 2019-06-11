@@ -2,13 +2,29 @@ import { Entity } from 'aframe-react';
 import { h, Component } from 'preact';
 import createRef from 'react-create-ref';
 
+function getFOV() {
+  return window.innerWidth > window.innerHeight ? 80 : 100;
+}
+
 export default class Camera extends Component {
   constructor(props) {
     super(props);
 
+    this.state = {
+      fov: getFOV()
+    };
+
     this.yawAxis = createRef();
     this.pitchAxis = createRef();
     this.rollAxis = createRef();
+
+    this.updateFOV = this.updateFOV.bind(this);
+  }
+
+  updateFOV() {
+    setTimeout(() => {
+      this.setState({ fov: getFOV() });
+    }, 100);
   }
 
   componentDidMount() {
@@ -17,10 +33,17 @@ export default class Camera extends Component {
     this.yawAxis.current.setAttribute('rotation', { x: 0, y: this.props.yaw, z: 0 });
     this.pitchAxis.current.setAttribute('rotation', { x: this.props.pitch, y: 0, z: 0 });
     this.rollAxis.current.setAttribute('rotation', { x: 0, y: 0, z: this.props.roll });
+
+    window.addEventListener('orientationchange', this.updateFOV);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('orientationchange', this.updateFOV);
   }
 
   render() {
     const { elevation, maxElevation, yaw, pitch, roll, children, ...otherProps } = this.props;
+    const { fov } = this.state;
     const end = {
       elevation: Math.min(maxElevation, Math.max(-maxElevation, elevation || 0)),
       yaw: (yaw || 0) % 360,
@@ -60,7 +83,7 @@ export default class Camera extends Component {
             primitive="a-camera"
             position="0 0 0"
             animation__roll={rollAnimation}
-            fov="90"
+            fov={fov}
             look-controls-enabled="false"
             wasd-controls-enabled="false"
           >
