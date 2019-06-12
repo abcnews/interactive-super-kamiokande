@@ -10,7 +10,7 @@
   text-align: center;
 }
 
-.scrollyteller > .panel:nth-child(2) > :first-child {
+.scrollyteller:global(.is-piecemeal) > .panel:nth-child(2) > :first-child {
   margin-top: 60vh !important;
 }
 
