@@ -12,12 +12,12 @@
   text-align: center;
 }
 
-.scrollyteller:global(.is-piecemeal) > .panel:global(.Block-content) > h2:last-child {
-  margin-top: 0 !important;
+.scrollyteller:global(.is-piecemeal) > .panel:global(.Block-content):nth-child(2) {
+  min-height: 0;
 }
 
-:global(.is-piecemeal) > .panel:global(.Block-content) > :last-child {
-  margin-bottom: 80vh !important;
+.scrollyteller:global(.is-piecemeal) > .panel:global(.Block-content):nth-child(2) > h2 {
+  margin-top: 0 !important;
 }
 
 :global(.is-piecemeal) > .panel:global(.Block-content):last-child > :first-child {
