@@ -100,11 +100,13 @@ function init() {
   const bulbMarker = dom.select('a[name="bulb"]');
 
   if (bulbMarker) {
+    const bulbContainer = document.createElement('p');
     const bulbGraphic = document.createElement('object');
 
     bulbGraphic.setAttribute('data', `${__webpack_public_path__}Bulb.svg`);
     bulbGraphic.setAttribute('style', 'margin:0 auto !important;width:400px');
-    dom.before(bulbMarker, bulbGraphic);
+    bulbContainer.appendChild(bulbGraphic);
+    dom.before(bulbMarker, bulbContainer);
     dom.detach(bulbMarker);
   }
 
