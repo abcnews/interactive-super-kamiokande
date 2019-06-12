@@ -12,8 +12,11 @@
   text-align: center;
 }
 
-:global(.is-piecemeal) > .panel:global(.Block-content) > :last-child {
+.scrollyteller:global(.is-piecemeal) > .panel:global(.Block-content) > h2:last-child {
   margin-top: 0 !important;
+}
+
+:global(.is-piecemeal) > .panel:global(.Block-content) > :last-child {
   margin-bottom: 80vh !important;
 }
 
