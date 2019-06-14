@@ -244,5 +244,5 @@ ks.animate("#Massive-Star",[{p:'opacity',t:[19000,20040],v:[1,0],e:[[0],[0]]}],
 {autoremove:false}).range(0,22200);
 if(document.location.search.substr(1).split('&').indexOf('global=paused')>=0)ks.globalPause()})(KeyshapeJS);
 ]]></script>
-<script href="./supernova.js"></script>
+<script href="supernova.js"></script>
 </svg>

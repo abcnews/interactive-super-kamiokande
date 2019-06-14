@@ -1,3 +1,5 @@
+console.log("loading supernova")
+
 const SLIDES = {
   1: [0, 3000],
   2: [3000, 5500],
