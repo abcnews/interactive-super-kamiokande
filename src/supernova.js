@@ -7,8 +7,8 @@ const SLIDES = {
 };
 
 const reset = () => {
-  KeyshapeJS.globalPause();
   KeyshapeJS.timelines()[0].time(0);
+  KeyshapeJS.globalPause();
 };
 
 let pauseTimeout = null;
@@ -31,6 +31,7 @@ const playSlide = index => {
 };
 
 const handleEvent = event => {
+  console.log(event.data)
   const { type, data } = event.data;
 
   switch (type) {
