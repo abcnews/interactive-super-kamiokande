@@ -35,7 +35,7 @@
 /* Hidden (accessible) title */
 
 .panel > h2 {
-  opacity: 0;
+  display: none;
 }
 
 /* Meta content (plucked from Header) */
@@ -46,6 +46,7 @@
   align-items: center;
   border: 0 !important;
   width: 100% !important;
+  margin-top: 39vh !important;
 }
 
 .panel > :global(.Header-content) > * {
