@@ -1,4 +1,4 @@
-console.log("loading supernova")
+// THIS IS NOW INLINE IN Supernova.svg
 
 const SLIDES = {
   1: [0, 3000],
@@ -33,7 +33,6 @@ const playSlide = index => {
 };
 
 const handleEvent = event => {
-  console.log(event.data)
   const { type, data } = event.data;
 
   switch (type) {
