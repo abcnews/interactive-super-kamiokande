@@ -1,0 +1,57 @@
+<html>
+<!-- p1(image-full) p2(image-full,video-full) p3(image-full,interactive,data:{"i":"interactive-super-kamiokande/master/thumbnail"}) -->
+
+<!-- CMID_OR_POSITION(image-full,interactive,data:{"i":"interactive-super-kamiokande/1.2.2/thumbnail"}) -->
+<head>
+  <base target="_parent">
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      background-color: black;
+    }
+
+    a {
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      object-fit: cover;
+    }
+  </style>
+</head>
+
+<body>
+  <a id="link">
+    <video muted autoplay loop preload playsinline src="./super-k-promo-combined.mp4" width="1024" height="576"></video>
+  </a>
+  <script>
+    (function (linkParamURLDelimiter, locationURL) {
+      var linkURL;
+      if (locationURL.indexOf(linkParamURLDelimiter) > -1) {
+        linkURL = locationURL.split(linkParamURLDelimiter)[1].split('&')[0];
+        link.href = linkURL;
+      }
+    })('originalLinkTarget=', String(window.location));
+
+    function setDimensions() {
+      [].slice.call(document.querySelectorAll('video')).forEach(function (video) {
+        video.setAttribute('width', window.innerWidth);
+        video.setAttribute('height', window.innerHeight);
+      });
+    }
+    setDimensions();
+
+    window.addEventListener('resize', setDimensions);
+  </script>
+</body>
+
+</html>
