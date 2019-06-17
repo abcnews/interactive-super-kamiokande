@@ -1,11 +1,11 @@
-import './polyfills';
-import capiFetch from '@abcnews/capi-fetch';
-import { loadOdysseyScrollyteller } from '@abcnews/scrollyteller';
-import cn from 'classnames';
-import { h, render } from 'preact';
-import SuperK from './components/SuperK';
-import Supernova from './components/Supernova';
-import styles from './styles.css';
+import "./polyfills";
+import capiFetch from "@abcnews/capi-fetch";
+import { loadOdysseyScrollyteller } from "@abcnews/scrollyteller";
+import cn from "classnames";
+import { h, render } from "preact";
+import SuperK from "./components/SuperK";
+import Supernova from "./components/Supernova";
+import styles from "./styles.css";
 
 let superkScrollyteller;
 let supernovaScrollyteller;
@@ -27,7 +27,8 @@ function renderSuperK() {
 
   schedulerReference = client => {
     const box = superkScrollyteller.mountNode.getBoundingClientRect();
-    const nextMountNodeOpacity = Math.max(0, Math.min(box.bottom - client.height, client.height)) / client.height;
+    const nextMountNodeOpacity =
+      Math.max(0, Math.min(box.bottom - client.height, client.height)) / client.height;
 
     if (mountNodeOpacity !== nextMountNodeOpacity) {
       mountNodeOpacity = nextMountNodeOpacity;
@@ -47,26 +48,34 @@ function renderSupernova() {
 }
 
 if (module.hot) {
-  module.hot.accept('./components/SuperK', () => {
+  module.hot.accept("./components/SuperK", () => {
     try {
       renderSuperK();
     } catch (err) {
-      import('./components/ErrorBox').then(exports => {
+      import("./components/ErrorBox").then(exports => {
         const ErrorBox = exports.default;
-        render(<ErrorBox error={err} />, superkScrollyteller.mountNode, superkScrollyteller.mountNode.firstChild);
+        render(
+          <ErrorBox error={err} />,
+          superkScrollyteller.mountNode,
+          superkScrollyteller.mountNode.firstChild
+        );
       });
     }
   });
 }
 
 if (module.hot) {
-  module.hot.accept('./components/Supernova', () => {
+  module.hot.accept("./components/Supernova", () => {
     try {
       renderSupernova();
     } catch (err) {
-      import('./components/ErrorBox').then(exports => {
+      import("./components/ErrorBox").then(exports => {
         const ErrorBox = exports.default;
-        render(<ErrorBox error={err} />, supernovaScrollyteller.mountNode, supernovaScrollyteller.mountNode.firstChild);
+        render(
+          <ErrorBox error={err} />,
+          supernovaScrollyteller.mountNode,
+          supernovaScrollyteller.mountNode.firstChild
+        );
       });
     }
   });
@@ -78,14 +87,14 @@ function init() {
 
   // Meta (byline/infosource/dates)
 
-  const delayedTitle = dom.select('.Main h2');
+  const delayedTitle = dom.select(".Main h2");
 
   if (delayedTitle) {
-    const metaContent = dom.select('.Header-content');
+    const metaContent = dom.select(".Header-content");
 
-    dom.detach(dom.select('h1', metaContent));
+    dom.detach(dom.select("h1", metaContent));
     dom.after(delayedTitle, metaContent);
-    dom.after(metaContent, document.createElement('hr'));
+    dom.after(metaContent, document.createElement("hr"));
   }
 
   // Bigger text markers
@@ -100,11 +109,11 @@ function init() {
   const bulbMarker = dom.select('a[name="bulb"]');
 
   if (bulbMarker) {
-    const bulbContainer = document.createElement('p');
-    const bulbGraphic = document.createElement('object');
+    const bulbContainer = document.createElement("p");
+    const bulbGraphic = document.createElement("object");
 
-    bulbGraphic.setAttribute('data', `${__webpack_public_path__}Bulb.svg`);
-    bulbGraphic.setAttribute('style', 'margin:0 auto !important;width:400px');
+    bulbGraphic.setAttribute("data", `${__webpack_public_path__}Bulb.svg`);
+    bulbGraphic.setAttribute("style", "margin:0 auto !important;width:400px");
     bulbContainer.appendChild(bulbGraphic);
     dom.before(bulbMarker, bulbContainer);
     dom.detach(bulbMarker);
@@ -113,11 +122,11 @@ function init() {
   // SuperK
 
   try {
-    superkScrollyteller = loadOdysseyScrollyteller('superk', cn('u-full', styles.mountNode));
+    superkScrollyteller = loadOdysseyScrollyteller("superk", cn("u-full", styles.mountNode));
   } catch (e) {}
 
   if (superkScrollyteller && superkScrollyteller.mountNode) {
-    while (superkScrollyteller.mountNode.nextElementSibling.tagName === 'A') {
+    while (superkScrollyteller.mountNode.nextElementSibling.tagName === "A") {
       dom.detach(superkScrollyteller.mountNode.nextElementSibling);
     }
 
@@ -134,11 +143,11 @@ function init() {
   // Supernova
 
   try {
-    supernovaScrollyteller = loadOdysseyScrollyteller('supernova', cn('u-full', styles.mountNode));
+    supernovaScrollyteller = loadOdysseyScrollyteller("supernova", cn("u-full", styles.mountNode));
   } catch (e) {}
 
   if (supernovaScrollyteller && supernovaScrollyteller.mountNode) {
-    while (supernovaScrollyteller.mountNode.nextElementSibling.tagName === 'A') {
+    while (supernovaScrollyteller.mountNode.nextElementSibling.tagName === "A") {
       dom.detach(supernovaScrollyteller.mountNode.nextElementSibling);
     }
 
@@ -147,26 +156,26 @@ function init() {
 
   // Dark > Light > Dark Flip
 
-  const existingMainEl = dom.select('main');
-  const flippedMainEl = document.createElement('main');
-  const revertedMainEl = document.createElement('main');
+  const existingMainEl = dom.select("main");
+  const flippedMainEl = document.createElement("main");
+  const revertedMainEl = document.createElement("main");
   let targetMainEl = flippedMainEl;
   let nextNode;
 
   while ((nextNode = supernovaScrollyteller.mountNode.nextSibling)) {
-    if (String(nextNode.className).indexOf('Block') > -1 && targetMainEl === flippedMainEl) {
+    if (String(nextNode.className).indexOf("Block") > -1 && targetMainEl === flippedMainEl) {
       targetMainEl = revertedMainEl;
     }
 
     targetMainEl.appendChild(nextNode);
   }
 
-  flippedMainEl.className = String(existingMainEl.className).replace('-invert', '');
+  flippedMainEl.className = String(existingMainEl.className).replace("-invert", "");
   revertedMainEl.className = String(existingMainEl.className);
   dom.after(existingMainEl, flippedMainEl);
   dom.after(flippedMainEl, revertedMainEl);
 
-  const firstRevertedBlockPar = dom.select('p', revertedMainEl);
+  const firstRevertedBlockPar = dom.select("p", revertedMainEl);
   let lastSign;
 
   subscribe(client => {
@@ -181,15 +190,26 @@ function init() {
     const currentSign = Math.sign(top);
 
     if (currentSign && currentSign !== lastSign) {
-      document.documentElement.classList[currentSign > 0 ? 'remove' : 'add']('is-dark-mode');
+      document.documentElement.classList[currentSign > 0 ? "remove" : "add"]("is-dark-mode");
       lastSign = currentSign;
     }
   });
+
+  // A quick hack to add a Scroll down with the array
+  const scrollHintElement = document.querySelector(".ScrollHint");
+
+  var scrollDown = document.createElement("div");
+  scrollDown.style.textAlign = "center";
+  scrollDown.style.fontFamily = "ABCSans, Helvetica, Arial, sans-serif";
+  scrollDown.style.fontSize = "11px";
+  scrollDown.innerHTML = '<span style="color:#f9f9f9; position:relative; top:-18px;">Scroll down</span>';
+
+  scrollHintElement.appendChild(scrollDown);
 }
 
 const ASSET_TAGNAMES = {
-  CustomImage: 'img',
-  Video: 'video'
+  CustomImage: "img",
+  Video: "video"
 };
 
 function fetchAssets(panels) {
@@ -219,7 +239,9 @@ function fetchAssets(panels) {
                 return reject(new Error(`Unsupported asset type: ${doc.docType}`));
               }
 
-              const renditions = (doc.renditions || doc.media).slice().sort((a, b) => b.width - a.width);
+              const renditions = (doc.renditions || doc.media)
+                .slice()
+                .sort((a, b) => b.width - a.width);
               let src = renditions[0].url;
 
               renditions.slice(1).forEach(x => {
@@ -247,9 +269,9 @@ function fetchAssets(panels) {
 if (window.__ODYSSEY__) {
   init();
 } else {
-  window.addEventListener('odyssey:api', init);
+  window.addEventListener("odyssey:api", init);
 }
 
-if (process.env.NODE_ENV === 'development') {
-  require('preact/devtools');
+if (process.env.NODE_ENV === "development") {
+  require("preact/devtools");
 }
