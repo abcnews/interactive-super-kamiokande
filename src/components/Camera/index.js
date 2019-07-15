@@ -1,6 +1,6 @@
 import { Entity } from 'aframe-react';
 import { h, Component } from 'preact';
-import createRef from 'react-create-ref';
+import { createRef } from '../../utils';
 
 function getFOV() {
   return window.innerWidth > window.innerHeight ? 80 : 100;
@@ -43,6 +43,7 @@ export default class Camera extends Component {
 
   render() {
     const { elevation, maxElevation, yaw, pitch, roll, children, ...otherProps } = this.props;
+
     const { fov } = this.state;
     const end = {
       elevation: Math.min(maxElevation, Math.max(-maxElevation, elevation || 0)),

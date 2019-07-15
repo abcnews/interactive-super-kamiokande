@@ -1,7 +1,7 @@
 import Scrollyteller from '@abcnews/scrollyteller';
 import cn from 'classnames';
 import { h, Component } from 'preact';
-import createRef from 'react-create-ref';
+import { createRef } from '../../utils';
 import styles from './styles.css';
 
 const MAX_FAILED_ATTEMPTS = 5;
