@@ -20,7 +20,7 @@
 		"aframe-animation-component": "^5.1.2",
 		"aframe-react": "^4.4.0",
 		"classnames": "^2.2.6",
-		"preact": "^8.4.2",
+		"preact": "^8.5.2",
 		"preact-compat": "^3.18.4",
 		"webvr-polyfill": "^0.10.10"
 	}
