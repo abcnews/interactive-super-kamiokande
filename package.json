@@ -11,7 +11,7 @@
 		"start": "aunty serve"
 	},
 	"devDependencies": {
-		"@abcnews/aunty": "^10.2.3"
+		"@abcnews/aunty": "^10.8.0"
 	},
 	"dependencies": {
 		"@abcnews/scrollyteller": "^1.1.4",
