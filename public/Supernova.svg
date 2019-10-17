@@ -244,57 +244,58 @@ ks.animate("#Massive-Star",[{p:'opacity',t:[19000,20040],v:[1,0],e:[[0],[0]]}],
 {autoremove:false}).range(0,22200);
 if(document.location.search.substr(1).split('&').indexOf('global=paused')>=0)ks.globalPause()})(KeyshapeJS);
 ]]></script>
-<script>
-const SLIDES = {
-  1: [0, 3000],
-  2: [3000, 5500],
-  3: [5500, 15000],
-  4: [15000, 19000],
-  5: [19000, 22500]
-};
+    <script>
+(function () {
+    var slides, pauseTimeout;
 
-const reset = () => {
-  KeyshapeJS.timelines()[0].time(0);
-  KeyshapeJS.globalPause();
-};
+    function reset() {
+        KeyshapeJS.timelines()[0].time(0);
+        KeyshapeJS.globalPause();
+    }
 
-let pauseTimeout = null;
+    function playSlide(index) {
+        var slide = slides[index];
 
-const playSlide = index => {
-  const slide = SLIDES[index];
+        if (!slide) {
+            return;
+        }
 
-  if (!slide) {
-    return;
-  }
+        clearTimeout(pauseTimeout);
 
-  clearTimeout(pauseTimeout);
+        KeyshapeJS.timelines()[0].time(slide[0]);
+        KeyshapeJS.globalPlay();
 
-  KeyshapeJS.timelines()[0].time(slide[0]);
-  KeyshapeJS.globalPlay();
+        pauseTimeout = setTimeout(function () {
+            KeyshapeJS.globalPause();
+        }, slide[1] - slide[0]);
+    }
 
-  pauseTimeout = setTimeout(() => {
-    KeyshapeJS.globalPause();
-  }, slide[1] - slide[0]);
-};
+    function handleEvent(event) {
+        switch (event.data.type) {
+            case 'reset':
+                reset();
+                break;
+            case 'slide':
+                playSlide(event.data.data);
+                break;
+            default:
+                break;
+        }
+    }
 
-const handleEvent = event => {
-  const { type, data } = event.data;
+    slides = {
+        1: [0, 3000],
+        2: [3000, 5500],
+        3: [5500, 15000],
+        4: [15000, 19000],
+        5: [19000, 22500]
+    };
 
-  switch (type) {
-    case 'reset':
-      reset();
-      break;
-    case 'slide':
-      playSlide(data);
-      break;
-    default:
-      break;
-  }
-};
+    pauseTimeout = null;
 
-window.addEventListener('message', handleEvent);
-
-// Wait at the start
-reset();
+    window.addEventListener('message', handleEvent);
+    
+    reset();
+})();
 </script>
 </svg>
