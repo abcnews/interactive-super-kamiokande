@@ -267,5 +267,5 @@ if (window.__ODYSSEY__) {
 }
 
 if (process.env.NODE_ENV === 'development') {
-  require('preact/devtools');
+  require('preact/debug');
 }

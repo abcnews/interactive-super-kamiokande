@@ -15,6 +15,11 @@ module.exports = {
       }
     };
 
+    // Update aliases to use preact@10
+    config.resolve.alias.react = 'preact/compat';
+    config.resolve.alias['react-dom'] = 'preact/compat';
+    delete config.resolve.alias['create-react-class'];
+
     return config;
   }
 };
