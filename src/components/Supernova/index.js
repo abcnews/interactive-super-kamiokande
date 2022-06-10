@@ -28,10 +28,10 @@ export default class Supernova extends Component {
     this.iframe.current.contentWindow.postMessage(message, '*');
   }
 
-  onMarker(config) {
-    const { exploded, reset, slide } = config;
+  onMarker(data) {
+    const { exploded, reset, slide } = data;
 
-    if (!this.iframe.current) {
+    if (!this.iframe.current || (exploded === undefined && reset === undefined && slide === undefined)) {
       return;
     }
 
@@ -60,7 +60,7 @@ export default class Supernova extends Component {
           className={styles.frame}
           frameborder="0"
           scrolling="no"
-          onLoad={() => (this.isFrameReady = true)}
+          onLoad={() => (this.isIframeReady = true)}
           src={`${__webpack_public_path__}Supernova.svg`}
         />
       </Scrollyteller>

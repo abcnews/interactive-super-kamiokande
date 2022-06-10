@@ -1,5 +1,5 @@
 function createRef() {
-  const ref = function(x) {
+  const ref = function (x) {
     ref.current = x;
   };
 

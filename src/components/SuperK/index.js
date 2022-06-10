@@ -19,13 +19,15 @@ export default class SuperK extends Component {
   constructor(props) {
     super(props);
 
-    this.configToStateMap = createCumulatitveStateMap(props.panels.map(panel => panel.config), DEFAULT_STATE);
+    props.panels.forEach((panel, index) => (panel.data._index = index));
+
+    this.indexedStates = createCumulatitveStateIndex(props.panels, DEFAULT_STATE);
 
     this.onMarker = this.onMarker.bind(this);
   }
 
-  onMarker(config) {
-    this.setState(this.configToStateMap.get(config));
+  onMarker(data) {
+    this.setState(this.indexedStates[data._index]);
   }
 
   render() {
@@ -47,33 +49,29 @@ export default class SuperK extends Component {
 const negativeNumberPattern = /^n\d+/;
 const decimalNumberPattern = /\d+p\d+$/;
 
-function createCumulatitveStateMap(states, initialState) {
-  const map = new WeakMap();
-  let tempState = { ...initialState };
+function createCumulatitveStateIndex(panels, initialState) {
+  let temp = { ...initialState };
 
-  states.forEach(state => {
-    tempState = { ...tempState, ...state };
+  return panels.map(({ data }) => {
+    temp = { ...temp, ...data };
 
     // Number resolution
-    Object.keys(tempState).forEach(key => {
-      if (negativeNumberPattern.test(String(tempState[key]))) {
-        tempState[key] = tempState[key].replace('n', '-');
+    Object.keys(temp).forEach(key => {
+      if (negativeNumberPattern.test(String(temp[key]))) {
+        temp[key] = temp[key].replace('n', '-');
       }
 
-      if (decimalNumberPattern.test(String(tempState[key]))) {
-        tempState[key] = tempState[key].replace('p', '.');
+      if (decimalNumberPattern.test(String(temp[key]))) {
+        temp[key] = temp[key].replace('p', '.');
       }
 
-      if (tempState[key] == +tempState[key]) {
-        tempState[key] = +tempState[key];
+      if (temp[key] == +temp[key]) {
+        temp[key] = +temp[key];
       }
     });
 
-    delete tempState.hash;
-    delete tempState.piecemeal;
+    const { hash, piecemeal, _index, ...state } = temp;
 
-    map.set(state, { ...tempState });
+    return state;
   });
-
-  return map;
 }

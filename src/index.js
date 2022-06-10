@@ -1,6 +1,8 @@
 import './polyfills';
+import { whenOdysseyLoaded } from '@abcnews/env-utils';
+import { isMount, selectMounts } from '@abcnews/mount-utils';
+import { loadScrollyteller } from '@abcnews/scrollyteller';
 import terminusFetch from '@abcnews/terminus-fetch';
-import { loadOdysseyScrollyteller } from '@abcnews/scrollyteller';
 import cn from 'classnames';
 import { h, render } from 'preact';
 import SuperK from './components/SuperK';
@@ -46,33 +48,7 @@ function renderSupernova() {
   );
 }
 
-if (module.hot) {
-  module.hot.accept('./components/SuperK', () => {
-    try {
-      renderSuperK();
-    } catch (err) {
-      import('./components/ErrorBox').then(exports => {
-        const ErrorBox = exports.default;
-        render(<ErrorBox error={err} />, superkScrollyteller.mountNode, superkScrollyteller.mountNode.firstChild);
-      });
-    }
-  });
-}
-
-if (module.hot) {
-  module.hot.accept('./components/Supernova', () => {
-    try {
-      renderSupernova();
-    } catch (err) {
-      import('./components/ErrorBox').then(exports => {
-        const ErrorBox = exports.default;
-        render(<ErrorBox error={err} />, supernovaScrollyteller.mountNode, supernovaScrollyteller.mountNode.firstChild);
-      });
-    }
-  });
-}
-
-function init() {
+whenOdysseyLoaded.then(() => {
   const dom = window.__ODYSSEY__.utils.dom;
   const { subscribe } = window.__ODYSSEY__.scheduler;
 
@@ -90,14 +66,14 @@ function init() {
 
   // Bigger text markers
 
-  dom.selectAll('a[name="bigger"]').forEach(el => {
+  selectMounts('bigger').forEach(el => {
     el.nextElementSibling.classList.add(styles.bigger);
     dom.detach(el);
   });
 
   // Bulb
 
-  const bulbMarker = dom.select('a[name="bulb"]');
+  const [bulbMarker] = selectMounts('bulb');
 
   if (bulbMarker) {
     const bulbContainer = document.createElement('p');
@@ -113,11 +89,13 @@ function init() {
   // SuperK
 
   try {
-    superkScrollyteller = loadOdysseyScrollyteller('superk', cn('u-full', styles.mountNode));
+    superkScrollyteller = loadScrollyteller('superk', 'u-full');
   } catch (e) {}
 
   if (superkScrollyteller && superkScrollyteller.mountNode) {
-    while (superkScrollyteller.mountNode.nextElementSibling.tagName === 'A') {
+    superkScrollyteller.mountNode.classList.add(styles.mountNode);
+
+    while (isMount(superkScrollyteller.mountNode.nextElementSibling)) {
       dom.detach(superkScrollyteller.mountNode.nextElementSibling);
     }
 
@@ -134,11 +112,13 @@ function init() {
   // Supernova
 
   try {
-    supernovaScrollyteller = loadOdysseyScrollyteller('supernova', cn('u-full', styles.mountNode));
+    supernovaScrollyteller = loadScrollyteller('supernova', 'u-full');
   } catch (e) {}
 
   if (supernovaScrollyteller && supernovaScrollyteller.mountNode) {
-    while (supernovaScrollyteller.mountNode.nextElementSibling.tagName === 'A') {
+    supernovaScrollyteller.mountNode.classList.add(styles.mountNode);
+
+    while (isMount(supernovaScrollyteller.mountNode.nextElementSibling)) {
       dom.detach(supernovaScrollyteller.mountNode.nextElementSibling);
     }
 
@@ -153,7 +133,7 @@ function init() {
   let targetMainEl = flippedMainEl;
   let nextNode;
 
-  while ((nextNode = supernovaScrollyteller.mountNode.nextSibling)) {
+  while ((nextNode = supernovaScrollyteller.mountNode.nextElementSibling)) {
     if (String(nextNode.className).indexOf('Block') > -1 && targetMainEl === flippedMainEl) {
       targetMainEl = revertedMainEl;
     }
@@ -196,17 +176,17 @@ function init() {
   scrollDown.innerHTML = '<span style="color:#f9f9f9; position:relative; top:-18px;">Scroll down</span>';
 
   scrollHintElement.appendChild(scrollDown);
-}
+});
 
 const ASSET_TAGNAMES = {
-  CustomImage: 'img',
+  Image: 'img',
   Video: 'video'
 };
 
 function fetchAssets(panels) {
   return new Promise((resolve, reject) => {
     const assetCMIDs = panels.reduce((memo, panel) => {
-      const assetCMID = panel.config.asset;
+      const assetCMID = panel.data.asset;
 
       if (assetCMID && memo.indexOf(assetCMID) === -1) {
         memo.push(assetCMID);
@@ -230,9 +210,8 @@ function fetchAssets(panels) {
                 return reject(new Error(`Unsupported asset type: ${doc.docType}`));
               }
 
-              const renditions = (doc.docType === 'Video'
-                ? doc.media.video.renditions.files
-                : doc.media.image.primary.complete
+              const renditions = (
+                doc.docType === 'Video' ? doc.media.video.renditions.files : doc.media.image.primary.complete
               )
                 .slice()
                 .sort((a, b) => b.width - a.width);
@@ -258,14 +237,4 @@ function fetchAssets(panels) {
         reject(err);
       });
   });
-}
-
-if (window.__ODYSSEY__) {
-  init();
-} else {
-  window.addEventListener('odyssey:api', init);
-}
-
-if (process.env.NODE_ENV === 'development') {
-  require('preact/debug');
 }

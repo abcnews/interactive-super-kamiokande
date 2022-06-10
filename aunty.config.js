@@ -2,9 +2,6 @@ const { resolve } = require('path');
 
 module.exports = {
   type: 'preact',
-  build: {
-    addModernJS: true
-  },
   serve: {
     hot: false
   },
