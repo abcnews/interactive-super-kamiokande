@@ -23,10 +23,10 @@
   resolved "https://registry.yarnpkg.com/@abcnews/alternating-case-to-object/-/alternating-case-to-object-3.0.2.tgz#126e4b5e14822d647a8e8ba2de24dc1c2bfbfb2b"
   integrity sha512-vDvVesKWHL/t6qf25OFLK0Um/3lTARDU49cN87L2jcKEAhjbY23IjCERyktwfhP9h1uyeiV/zJ4XRZfZBcnaPg==
 
-"@abcnews/aunty@^12.1.3":
-  version "12.1.3"
-  resolved "https://registry.yarnpkg.com/@abcnews/aunty/-/aunty-12.1.3.tgz#e848bf29450f04d2743756a47ed633e3e0f8d45a"
-  integrity sha512-TqHg6V3UstrIC7fa5nA8IQrPuKQdDZ1E7Kdj4+OaQGonP3D7sLrUUeiPz2+LbcF7tuLyHia3bMaGTrA6XCHbiQ==
+"@abcnews/aunty@^12.2.0":
+  version "12.2.0"
+  resolved "https://registry.yarnpkg.com/@abcnews/aunty/-/aunty-12.2.0.tgz#0429b2dfa33f444140ec15d63933436f2371d2b1"
+  integrity sha512-8gQpbq24QkofCTLjZq1yRtLAAAw4kRgE+UrLyY2lLANfrSw0nX/TQFfluxEaWwpeAXOy31I5y07wZgAhuyZ6ew==
   dependencies:
     "@babel/core" "^7.11.4"
     "@babel/plugin-syntax-dynamic-import" "^7.2.0"
@@ -3508,7 +3508,7 @@ debug@4, debug@^4.0.0, debug@^4.1.0, debug@^4.1.1, debug@^4.3.1, debug@^4.3.2, d
   dependencies:
     ms "2.1.2"
 
-"debug@github:ngokevin/debug#noTimestamp":
+debug@ngokevin/debug#noTimestamp:
   version "2.2.0"
   resolved "https://codeload.github.com/ngokevin/debug/tar.gz/ef5f8e66d49ce8bc64c6f282c15f8b7164409e3a"
 
@@ -3719,7 +3719,7 @@ dns-packet@^5.2.2:
   dependencies:
     "@leichtgewicht/ip-codec" "^2.0.1"
 
-"document-register-element@github:dmarcos/document-register-element#8ccc532b7f3744be954574caf3072a5fd260ca90":
+document-register-element@dmarcos/document-register-element#8ccc532b7f3744be954574caf3072a5fd260ca90:
   version "0.5.4"
   resolved "https://codeload.github.com/dmarcos/document-register-element/tar.gz/8ccc532b7f3744be954574caf3072a5fd260ca90"
 
@@ -9150,7 +9150,7 @@ textextensions@^5.12.0, textextensions@^5.13.0:
   resolved "https://registry.yarnpkg.com/textextensions/-/textextensions-5.15.0.tgz#4bb3296ad6fc111cf4b39c589dd028d8aaaf7060"
   integrity sha512-MeqZRHLuaGamUXGuVn2ivtU3LA3mLCCIO5kUGoohTCoGmCBg/+8yPhWVX9WSl9telvVd8erftjFk9Fwb2dD6rw==
 
-"three-bmfont-text@github:dmarcos/three-bmfont-text#1babdf8507":
+three-bmfont-text@dmarcos/three-bmfont-text#1babdf8507:
   version "2.3.0"
   resolved "https://codeload.github.com/dmarcos/three-bmfont-text/tar.gz/1babdf8507c731a18f8af3b807292e2b9740955e"
   dependencies:
